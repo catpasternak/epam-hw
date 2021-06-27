@@ -17,14 +17,3 @@ def test_lists_without_sums():
     c = [1, 0]
     d = [0, 2]
     assert check_sum_of_four(a, b, c, d) == 0
-
-
-def test_empty_lists():
-    """Testing that empty lists return a message"""
-    a, b, c, d, = (
-        [],
-        [],
-        [],
-        [],
-    )
-    assert check_sum_of_four(a, b, c, d) == "Lists are empty."

@@ -9,13 +9,16 @@ from typing import List
 
 
 def check_sum_of_four(a: List[int], b: List[int], c: List[int], d: List[int]) -> int:
-    if len(a) == 0:
-        return "Lists are empty."
-    counter = 0
+    half_combies = {}
     for i in a:
         for j in b:
-            for k in c:
-                for m in d:
-                    if (i + j + k + m) == 0:
-                        counter += 1
+            if (i + j) not in half_combies:
+                half_combies[i + j] = 1
+            else:
+                half_combies[i + j] += 1
+    counter = 0
+    for k in c:
+        for m in d:
+            if -(k + m) in half_combies:
+                counter += half_combies[-(k + m)]
     return counter

@@ -11,17 +11,14 @@ from typing import List
 
 
 def find_max_subarray_sum(nums: List[int], k: int) -> int:
-    if len(nums) == 0:
-        return "List is empty."
-    if k <= 0:
-        return "Second argument must be positive integer."
-    if k > len(nums):
-        k = len(nums)
-    max_so_far = sum(nums[:k])
-    while k > 0:
-        for i in range(1, len(nums) - k + 1):
-            subarr_sum = sum(nums[i : (i + k)])
+    if k <= len(nums):
+        max_length = k
+    else:
+        max_length = len(nums)
+    max_so_far = sum(nums[:max_length])
+    for subarr_length in range(max_length, 0, -1):
+        for i in range(1, len(nums) - subarr_length + 1):
+            subarr_sum = sum(nums[i : (i + subarr_length)])
             if subarr_sum > max_so_far:
                 max_so_far = subarr_sum
-        k -= 1
     return max_so_far

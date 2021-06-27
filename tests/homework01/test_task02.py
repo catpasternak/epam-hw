@@ -6,6 +6,11 @@ def test_true_fib_seq():
     assert check_fib([0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])
 
 
+def test_part_of_true_fib_seq():
+    """Testing part of the original Fibonacci sequence"""
+    assert check_fib([3, 5, 8, 13, 21, 34, 55])
+
+
 def test_fib_alike_seq():
     """Testing sequence that satisfies n=(n-1)+(n-2) but is not Fibanacci"""
     assert not check_fib([4, 6, 10, 16, 26, 42, 68])

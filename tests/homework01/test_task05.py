@@ -10,16 +10,3 @@ def test_max_sum_less_k():
     """Testing that array with max sum produced by subarray shorter than k
     gives correct result"""
     assert find_max_subarray_sum([1, 2, 3, -10, -20, 20], 3) == 20
-
-
-def test_empty_list():
-    """Testing that empty list brings a message"""
-    assert find_max_subarray_sum([], 3) == "List is empty."
-
-
-def test_k_zero():
-    """Testing that zero second argument brings a message"""
-    assert (
-        find_max_subarray_sum([1, 2, 3, 4], 0)
-        == "Second argument must be positive integer."
-    )
