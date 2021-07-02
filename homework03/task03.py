@@ -25,13 +25,16 @@ def make_filter(**keywords):
 
     for key, value in keywords.items():
 
-        def keyword_filter_func(data_elem):  # value changed to data_elem
-            try:
-                return data_elem[key] == value  # value[key] to data_elem[key]
-            except KeyError:  # added exception
-                return False
+        def func_for_filter(key, value):
+            def keyword_filter_func(data_elem):  # value changed to data_elem
+                try:
+                    return data_elem[key] == value  # value[key] to data_elem[key]
+                except KeyError:  # added exception
+                    return False
 
-        filter_funcs.append(keyword_filter_func)
+            return keyword_filter_func
+
+        filter_funcs.append(func_for_filter(key, value))
 
     return Filter(filter_funcs)
 

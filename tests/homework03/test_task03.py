@@ -31,3 +31,13 @@ def test_filter_returns_empty_when_key_is_not_present_in_source_data():
     ]
 
     assert make_filter(gender="female").apply(sample_data) == []
+
+
+def test_filter_returns_empty_when_keys_match_partially():
+    """Testing that filter object with its method apply() returns None when keys don't match elements in full"""
+    sample_data = [
+        {"name": "John", "age": 3, "color": "blue"},
+        {"name": "Jane", "age": 5, "color": "red"},
+    ]
+
+    assert make_filter(name="Jane", age=3).apply(sample_data) == []
