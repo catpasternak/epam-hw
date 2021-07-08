@@ -23,17 +23,23 @@ def f():
 
 
 def cache(times=3):
-    def _cache(func):
-        cached_data = []
+    """Saves function result with unique arguments to cache and keeps it there for given number of calls"""
 
-        def wrapper(*args):
-            nonlocal cached_data
-            if cached_data:
-                return cached_data.pop()
-            result = func(*args)
-            cached_data = [result for _ in range(times)]
-            return result
+    def decorator(func):
+        memorized = {}
+
+        def wrapper(*args, **kwargs):
+            arguments = tuple(args) + tuple(kwargs.items())
+            if arguments not in memorized:
+                memorized[arguments] = [func(*args, **kwargs), times]
+                return memorized[arguments][0]
+            else:
+                output = memorized[arguments][0]
+                memorized[arguments][1] -= 1
+                if memorized[arguments][1] == 0:
+                    del memorized[arguments]
+                return output
 
         return wrapper
 
-    return _cache
+    return decorator
