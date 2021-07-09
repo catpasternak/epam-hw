@@ -16,6 +16,7 @@ def check_perfect_square(num):
 
 
 def check_fib(data: Sequence[int]) -> bool:
+    """Using math property of Fib.seq. elements to check if given sequence is part of Fibonacci"""
     try:
         # using try due to the case of negative int or shorter list
         # using 3rd element in order to make sure it exists
@@ -29,3 +30,21 @@ def check_fib(data: Sequence[int]) -> bool:
         return False
     except (ValueError, IndexError):
         return False
+
+
+def check_fib_2(data: Sequence[int]) -> bool:
+    """Using generator to check if given sequence is part of Fibonacci sequence"""
+    if len(data) < 1:
+        raise ValueError
+
+    def fib_generator(start_elem):
+        a, b = 0, 1
+        while True:
+            if a >= start_elem:
+                yield a
+            a, b = b, a + b
+
+    for seq_elem, fib_elem in zip(data, fib_generator(data[0])):
+        if seq_elem != fib_elem:
+            return False
+    return True

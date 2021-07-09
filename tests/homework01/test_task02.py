@@ -1,26 +1,24 @@
-from homework01.task02 import check_fib
+import pytest
+
+from homework01.task02 import check_fib, check_fib_2
+
+testdata = [
+    ([0, 1, 1, 2, 3, 5, 8, 13], True),
+    ([3, 5, 8, 13], True),
+    ([2, 4, 6, 10, 16, 26], False),
+    ([3, 5, 6, 7, 8, 9], False),
+]
 
 
-def test_true_fib_seq():
-    """Testing the original Fibonacci sequence"""
-    assert check_fib([0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])
+@pytest.mark.parametrize(
+    "sequence, expected", testdata, ids=["fib", "fib part", "fib-like", "non-fib"]
+)
+def test_sequence_fibonacci_check(sequence, expected):
+    """Testing that sequences are correctly defined as Fibonacci of not"""
+    assert check_fib(sequence) == expected
+    assert check_fib_2(sequence) == expected
 
 
-def test_part_of_true_fib_seq():
-    """Testing part of the original Fibonacci sequence"""
-    assert check_fib([3, 5, 8, 13, 21, 34, 55])
-
-
-def test_fib_alike_seq():
-    """Testing sequence that satisfies n=(n-1)+(n-2) but is not Fibanacci"""
-    assert not check_fib([4, 6, 10, 16, 26, 42, 68])
-
-
-def test_wrong_seq():
-    """Testing non Fibonacci sequence"""
-    assert not check_fib([3, 5, 6, 7, 8, 9, 12])
-
-
-def test_too_short_seq():
-    """Testing sequence that is too short to be evaluated"""
-    assert not check_fib([0, 1])
+def test_error_raised_when_zero_sequence():
+    with pytest.raises(ValueError):
+        check_fib_2([])
