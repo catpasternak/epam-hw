@@ -20,6 +20,4 @@ from typing import Any, List
 
 def combinations(*args: List[Any]) -> List[List]:
     """Returns all combinations of elements from given lists"""
-    comb_tuples = list(itertools.product(*args))
-    comb_lists = [[elem for elem in tupl] for tupl in comb_tuples]
-    return comb_lists
+    return [list(item) for item in itertools.product(*args)]

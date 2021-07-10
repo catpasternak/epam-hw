@@ -24,6 +24,4 @@ def major_and_minor_elem(inp: List) -> Tuple[int, int]:
     """Finds most common and least common elements in list"""
     frequencies = {elem: inp.count(elem) for elem in set(inp)}
     sorted_by_freq = sorted(list(frequencies.keys()), key=lambda x: frequencies.get(x))
-    minor = sorted_by_freq[0]
-    major = sorted_by_freq[-1]
-    return major, minor
+    return sorted_by_freq[-1], sorted_by_freq[0]

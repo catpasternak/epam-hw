@@ -21,10 +21,16 @@ assert val_1 is val_2
 from typing import Callable
 
 
-def cache(func: Callable, memorized={}) -> Callable:
-    """Picks function output from cache or adds new output to cache"""
-    try:
-        return memorized[func]
-    except KeyError:
-        memorized[func] = func
-        return memorized[func]
+def cache(func: Callable) -> Callable:
+    memory = {}
+
+    def inner(*args, **kwargs):
+        arguments = tuple(args) + tuple(kwargs.items())
+        try:
+            return memory[arguments]
+        except KeyError:
+            memory[arguments] = func(*args, **kwargs)
+            print(f"{memory=}")
+            return memory[arguments]
+
+    return inner
