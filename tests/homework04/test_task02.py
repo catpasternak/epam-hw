@@ -1,18 +1,18 @@
-from unittest.mock import MagicMock
+from unittest.mock import patch
 
-import pytest
-
-import homework04
 from homework04.task02 import count_dots_on_i
 
 
-@pytest.fixture()
-def mock_url(monkeypatch):
-    mock = MagicMock()
-    mock.return_value.read.return_value = "<title>Hi!</title>".encode("utf-8")
-    monkeypatch.setattr(homework04.task02, "urlopen", mock)
+class FakeResponse:
+    """Mocking service class"""
+    def __init__(self, content):
+        self.content = content
 
+    def get_data(self):
+        return self.content
 
-def test_i_count(mock_url):
-    """Testing number of i is correct and test uses mocked url instead of real"""
-    assert count_dots_on_i("http://sample.com") == 3
+def test_i_count():
+    """Testing business logic, service class for retrieving data from url mocked"""
+    with patch('homework04.task02.UrlResponse') as mock_request:
+        mock_request.return_value = FakeResponse(content='<title>Hi!</title>')
+        assert count_dots_on_i('http://example.com') == 3

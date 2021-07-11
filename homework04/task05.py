@@ -24,6 +24,6 @@ def fizzbuzz(n: int) -> Generator[str, None, None]:
     nums = (num for num in range(1, n + 1))
 
     def find_first_true(tup):
-        yield next(elem for elem in tup if elem)
+        return next(elem for elem in tup if elem)
 
     yield (find_first_true(tup) for tup in zip(fizzbuzz, fizz, buzz, nums))

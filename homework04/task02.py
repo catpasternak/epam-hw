@@ -23,12 +23,22 @@ You will learn:
 from urllib.request import urlopen
 
 
+class UrlResponse():
+    """Service class that extracts data fron url"""
+    def __init__(self, url):
+        self.url = url
+
+    def get_data(self):
+        try:
+            response = urlopen(self.url)
+        except Exception:
+            raise ValueError('Unreachable {url}')
+        else:
+            return response.read().decode()
+
+
 def count_dots_on_i(url: str) -> int:
-    try:
-        response = urlopen(url)
-    except Exception:
-        raise ValueError(f"Unreachable {url}")
-    else:
-        content = response.read().decode()
-        i_counter = content.count("i")
-        return i_counter
+    """Processing data according to business logic"""
+    data = UrlResponse(url)
+    content = data.get_data()
+    return content.count("i")
