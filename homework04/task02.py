@@ -23,8 +23,9 @@ You will learn:
 from urllib.request import urlopen
 
 
-class UrlResponse():
+class UrlResponse:
     """Service class that extracts data fron url"""
+
     def __init__(self, url):
         self.url = url
 
@@ -32,7 +33,7 @@ class UrlResponse():
         try:
             response = urlopen(self.url)
         except Exception:
-            raise ValueError('Unreachable {url}')
+            raise ValueError("Unreachable {url}")
         else:
             return response.read().decode()
 
