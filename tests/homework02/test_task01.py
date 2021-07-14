@@ -7,6 +7,37 @@ def _path_to(filename):
     return os.path.join(os.path.dirname(__file__), filename)
 
 
+def test_new_func():
+    """Testing 10 longest diverse words, rarest character, punctuation count, non-ASCII count
+    and most common non-ASCII character.
+    The last word among longest is different from old version due to hyphenation took into account"""
+    assert task01.all_results(
+        _path_to("sample01_task01.txt"), encoding="unicode-escape"
+    ) == (
+        [
+            "vorzutäuschen",
+            "Fruchtbarkeit",
+            "herabgesunken",
+            "ungeschwächt",
+            "Bürokraten",
+            "Rotwelsch",
+            "Oberfläche",
+            "brunnenführende",
+            "Technikern",
+            "versucht",
+        ],
+        "j",
+        12,
+        7,
+        "ä",
+    )
+
+
+"""
+Below are tests for old version of solution without tokenization:
+"""
+
+
 def test_longest_diverse_words():
     """Testing that function returns 10 words with biggest amount of unique symbols in it"""
     assert task01.get_longest_diverse_words(
