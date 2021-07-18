@@ -1,48 +1,69 @@
+import datetime
+
 import pytest
 
 from homework06.task02 import *
 
-opp_teacher = Teacher("Daniil", "Shadrin")
-advanced_python_teacher = Teacher("Aleksandr", "Smetanin")
 
-lazy_student = Student("Roman", "Petrov")
-good_student = Student("Lev", "Sokolov")
-
-oop_hw = opp_teacher.create_homework("Learn OOP", 1)
-docs_hw = opp_teacher.create_homework("Read docs", 5)
-
-result_1 = good_student.do_homework(oop_hw, "I have done this hw")
-result_3 = lazy_student.do_homework(docs_hw, "done")
-
-opp_teacher.check_homework(result_1)
-temp_1 = opp_teacher.homework_done
-
-advanced_python_teacher.check_homework(result_1)
-temp_2 = Teacher.homework_done
+@pytest.fixture
+def teacher():
+    return Teacher("Remus", "Lupin")
 
 
-def test_HomeworkResult_accepts_only_Homework_object():
-    """Testing that error is raised if attribute is not Homework instance"""
-    with pytest.raises(AttributeError):
-        result4 = HomeworkResult(good_student, "fff", "Solution")
+@pytest.fixture
+def student():
+    return Student("Lee", "Jordan")
 
 
-def test_short_solution_not_accepted():
-    """Testing check_homework method returns False when solution is less than 5 chars long"""
-    assert opp_teacher.check_homework(result_3) == False
+@pytest.fixture
+def homework():
+    return Homework("Goblin thesis", 7)
 
 
-def test_homework_dictionary():
-    """Testing that checked homeworks are saved to dictionary with unique solutions"""
-    assert temp_1 == temp_2
+def test_Teacher_class_attr(teacher):
+    assert teacher.first_name == "Remus"
+    assert teacher.last_name == "Lupin"
 
 
-def test_solutions_are_saved_to_dictionary():
-    """Testing slutions are reached from dictionary by homework object"""
-    assert Teacher.homework_done[oop_hw] == {result_1}
+def test_Student_class_attr(student):
+    assert student.first_name == "Lee"
+    assert student.last_name == "Jordan"
 
 
-def test_reset_results():
-    """Testing that result are cleared after reset"""
+def test_Student_do_homework(student, homework):
+    result = student.do_homework(homework, "Solution to Goblin thesis")
+    assert isinstance(result, HomeworkResult)
+    assert result.homework == homework
+    assert result.solution == "Solution to Goblin thesis"
+    assert result.author == student
+
+
+def test_Student_do_homework_late(student, homework):
+    homework.created = datetime.datetime.today() - datetime.timedelta(days=10)
+    with pytest.raises(DeadlineError):
+        student.do_homework(homework, "Solution to Goblin thesis")
+
+
+def test_Teacher_create_homework(teacher):
+    homework = teacher.create_homework("Boggarts", 5)
+    assert isinstance(homework, Homework)
+    assert homework.text == "Boggarts"
+    assert homework.deadline == datetime.timedelta(days=5)
+
+
+def test_Teacher_check_homework(teacher, student, homework):
+    bad_result = HomeworkResult(student, homework, "done")
+    good_result = HomeworkResult(student, homework, "Solution to Goblin thesis")
+    assert Teacher.homework_done == {}
+    assert not teacher.check_homework(bad_result)
+    assert teacher.check_homework(good_result)
+    assert Teacher.homework_done[homework] == {good_result}
     Teacher.reset_results()
     assert Teacher.homework_done == {}
+
+
+def test_wrong_homework_result(student):
+    with pytest.raises(AttributeError):
+        wrong_result = HomeworkResult(
+            student, "not-a-homework", "no-matter-what-solution"
+        )
