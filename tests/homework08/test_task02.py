@@ -1,6 +1,12 @@
+import os
+
 import pytest
 
 from homework08.task02 import TableData
+
+
+def _path_to(filename):
+    return os.path.join(os.path.dirname(__file__), filename)
 
 
 @pytest.fixture
@@ -8,7 +14,7 @@ def presidents():
     """Creates :class:'TableData' object.
     :return: :class:'TableData' instance
     """
-    presidents = TableData("example.sqlite", "presidents")
+    presidents = TableData(_path_to("example.sqlite"), "presidents")
     return presidents
 
 
