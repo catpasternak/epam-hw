@@ -6,135 +6,100 @@ Given a file containing text. Complete using only default collections:
     4) Count every non ascii char
     5) Find most common non ascii char for document
 """
-import string
 import unicodedata
 from collections import defaultdict
-from typing import List
 
 
-def tokenize(input_file):
-    """Yields whole words and single punctuation chars"""
+def by_word(input_file):
+    """Yields whole words from file"""
     token_buffer = ""
     dash_flag = 0
     while char := input_file.read(1):
         category = unicodedata.category(char)
-        if category in ("Ll", "Lo", "Lt", "Lu"):
+        if category[0] == "L":
             dash_flag = 0
             token_buffer += char
-        elif category in ("Pc", "Pe", "Pf", "Pi", "Po", "Ps"):
+        elif category[0] == "P" and category != "Pd":
             dash_flag = 0
             if token_buffer:
-                yield (token_buffer, "word")
+                yield token_buffer
                 token_buffer = ""
-                yield (char, "punc")
         elif category == "Pd":
             if token_buffer:
                 if not dash_flag:
                     dash_flag = 1
                 else:
                     dash_flag = 0
-                    yield (token_buffer, "word")
+                    yield token_buffer
                     token_buffer = ""
-            yield (char, "punc")
-        elif category in ("Cc", "Zl", "Zp", "Zs"):
-            if not dash_flag:
-                yield (token_buffer, "word")
+        elif category[0] in ("C", "Z"):
+            if token_buffer and not dash_flag:
+                yield token_buffer
                 token_buffer = ""
         else:
             dash_flag = 0
             if token_buffer:
-                yield (token_buffer, "word")
+                yield token_buffer
                 token_buffer = ""
 
 
-def all_results(file_path, encoding="utf-8"):
+def by_symbol(input_file):
+    """Yields tuples containing symbol and its category: letter or punctuation."""
+    while char := input_file.read(1):
+        category = unicodedata.category(char)
+        if category[0] == "L":
+            yield char, "letter"
+        if category[0] == "P":
+            yield char, "punctuation"
 
-    input_file = open(file_path, encoding=encoding)
 
-    punc_counter = 0
+def custom_open(file_path, encoding="utf-8", tokenize=by_word):
+    """Yields from file by wors or by char accoding to chosen tokenize function."""
+    with open(file_path, encoding=encoding) as input_file:
+        yield from tokenize(input_file)
+
+
+def get_longest_diverse_words(file_path, encoding="utf-8"):
+    """Finds 10 words with maximum number of diverse characters."""
     top_10 = ["" for _ in range(10)]
+    for elem in custom_open(file_path, encoding=encoding, tokenize=by_word):
+        top_10.append(elem)
+        top_10 = sorted(top_10, key=lambda x: len(set(x.lower())), reverse=True)[:10]
+    return top_10
+
+
+def get_rarest_char(file_path, encoding="utf-8"):
+    """Finds least common character in file."""
     chars_freq = defaultdict(int)
-    non_ascii_count = 0
-    non_ascii_freq = defaultdict(int)
-
-    for token in tokenize(input_file):
-        if token[1] == "punc":
-            punc_counter += 1
-            chars_freq[token[0]] += 1
-            if ord(token[0]) > 127:
-                non_ascii_count += 1
-                non_ascii_freq[token[0]] += 1
-        else:
-            top_10.append(token[0])
-            top_10 = sorted(top_10, key=lambda x: len(set(x.lower())), reverse=True)[
-                :10
-            ]
-            for char in token[0]:
-                chars_freq[char.lower()] += 1
-                if ord(char) > 127:
-                    non_ascii_count += 1
-                    non_ascii_freq[char] += 1
-
-    input_file.close()
-
-    chars_sorted = sorted(list(chars_freq.keys()), key=lambda x: chars_freq.get(x))
-    rarest_char = chars_sorted[0]
-    sorted_chars = sorted(
-        list(non_ascii_freq.keys()), key=lambda x: non_ascii_freq.get(x)
-    )
-    common_non_ascii = sorted_chars[-1]
-    return top_10, rarest_char, punc_counter, non_ascii_count, common_non_ascii
-
-
-"""
-Below is previous version of solution without tokenization:
-"""
-
-
-def get_longest_diverse_words(file_path: str, encoding="utf-8") -> List[str]:
-    def remove_punc(source_word):
-        """Removes punctuation chars from string"""
-        word = source_word
-        for char in word:
-            if unicodedata.category(char)[0] != "L":
-                word = word.replace(char, "")
-        return word
-
-    with open(file_path, encoding=encoding) as fi:
-        words = [remove_punc(word) for line in fi for word in line.split()]
-    sorted_words = sorted(words, key=lambda word: len(set(word)), reverse=True)
-    return sorted_words[:10]
-
-
-def get_rarest_char(file_path: str, encoding="utf-8") -> str:
-    with open(file_path, encoding=encoding) as fi:
-        lower_chars = [char.lower() for line in fi for char in line]
-    chars_freq = {char: lower_chars.count(char) for char in set(lower_chars)}
-    chars_sorted = sorted(list(chars_freq.keys()), key=lambda x: chars_freq.get(x))
-    rarest = chars_sorted[0]
-    return rarest
-
-
-def count_punctuation_chars(file_path: str, encoding="utf-8") -> int:
-    punc = string.punctuation
-    with open(file_path, encoding=encoding) as fi:
-        punc_chars = [char for line in fi for char in line if char in punc]
-    return len(punc_chars)
-
-
-def count_non_ascii_chars(file_path: str, encoding="utf-8") -> int:
-    with open(file_path, encoding=encoding) as fi:
-        non_ascii_chars = [char for line in fi for char in line if ord(char) > 127]
-    return len(non_ascii_chars)
-
-
-def get_most_common_non_ascii_char(file_path: str, encoding="utf-8") -> str:
-    with open(file_path, encoding=encoding) as fi:
-        non_ascii_chars = [char for line in fi for char in line if ord(char) > 127]
-    non_ascii_freq = {
-        char: non_ascii_chars.count(char) for char in set(non_ascii_chars)
-    }
-    sorted_chars = sorted(
-        list(non_ascii_freq.keys()), key=lambda x: non_ascii_freq.get(x), reverse=True
-    )
+    for elem in custom_open(file_path, encoding=encoding, tokenize=by_symbol):
+        chars_freq[elem[0].lower()] += 1
+    sorted_chars = sorted(chars_freq.keys(), key=lambda x: chars_freq.get(x))
     return sorted_chars[0]
+
+
+def count_punctuation_chars(file_path, encoding="utf-8"):
+    """Counts punctuation chars in file."""
+    counter = 0
+    for elem in custom_open(file_path, encoding=encoding, tokenize=by_symbol):
+        if elem[1] == "punctuation":
+            counter += 1
+    return counter
+
+
+def count_non_ascii_chars(file_path, encoding="utf-8"):
+    """Counts non-ASCII characters from file."""
+    counter = 0
+    for elem in custom_open(file_path, encoding=encoding, tokenize=by_symbol):
+        if not elem[0].isascii():
+            counter += 1
+    return counter
+
+
+def get_most_common_non_ascii_char(file_path, encoding="utf-8"):
+    """Finds most common non-ASCII character from file."""
+    frequencies = defaultdict(int)
+    for elem in custom_open(file_path, encoding=encoding, tokenize=by_symbol):
+        if not elem[0].isascii():
+            frequencies[elem[0].lower()] += 1
+    sorted_freq = sorted(frequencies.keys(), key=lambda x: frequencies.get(x))
+    return sorted_freq[-1]

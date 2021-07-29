@@ -1,13 +1,13 @@
 from homework02.task04 import cache
 
 
-def func(a, b):
-    return (a ** b) ** 2
+def func(lst, c, d):
+    return lst[0] * lst[1] + c + d
 
 
 cache_func = cache(func)
 
-some = 1, 2
+some = ([1, 1], 2, 3)
 
 val_1 = cache_func(*some)
 val_2 = cache_func(*some)

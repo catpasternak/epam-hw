@@ -22,15 +22,17 @@ from typing import Callable
 
 
 def cache(func: Callable) -> Callable:
-    memory = {}
+    """Decorator that looks up function args in cache to return previuos result if exists."""
+    memory = []
 
     def inner(*args, **kwargs):
-        arguments = tuple(args) + tuple(kwargs.items())
-        try:
-            return memory[arguments]
-        except KeyError:
-            memory[arguments] = func(*args, **kwargs)
-            print(f"{memory=}")
-            return memory[arguments]
+        arguments = args, kwargs.items()
+        for call in memory:
+            if call[0] == arguments:
+                return call[1]
+        func_outcome = func(*args, **kwargs)
+        call = arguments, func_outcome
+        memory.append(call)
+        return func_outcome
 
     return inner

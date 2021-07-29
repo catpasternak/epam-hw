@@ -17,11 +17,12 @@ Input: [2,2,1,1,1,2,2]
 Output: 2, 1
 
 """
+from collections import Counter
 from typing import List, Tuple
 
 
 def major_and_minor_elem(inp: List) -> Tuple[int, int]:
     """Finds most common and least common elements in list"""
-    frequencies = {elem: inp.count(elem) for elem in set(inp)}
-    sorted_by_freq = sorted(list(frequencies.keys()), key=lambda x: frequencies.get(x))
-    return sorted_by_freq[-1], sorted_by_freq[0]
+    frequencies = Counter(inp)
+    sorted_freq = frequencies.most_common()
+    return sorted_freq[0][0], sorted_freq[-1][0]
