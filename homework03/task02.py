@@ -12,7 +12,9 @@ def slow_calculate(value):
     data = hashlib.md5(str(value).encode()).digest()
     return sum(struct.unpack('<' + 'B' * len(data), data))
 
-Calculate total sum of slow_calculate() of all numbers starting from 0 to 500. Calculation time should not take more than a minute. Use functional capabilities of multiprocessing module. You are not allowed to modify slow_calculate function.
+Calculate total sum of slow_calculate() of all numbers starting from 0 to 500. Calculation time
+should not take more than a minute. Use functional capabilities of multiprocessing module.
+You are not allowed to modify slow_calculate function.
 
 """
 
@@ -27,9 +29,9 @@ def timer(func):
     """Decorator that counts function execution time"""
 
     def wrapper(*args, **kwargs):
-        start = time.perf_counter()
+        start = time.time()
         output = func(*args, **kwargs)
-        stop = time.perf_counter()
+        stop = time.time()
         elapsed_time = stop - start
         print(f"Elapsed time: {elapsed_time:0.4f} seconds")
         return output
@@ -53,8 +55,8 @@ def boosted_calculate_500():
 
 def time_of_boosted_calc_50():
     with Pool(8) as pool:
-        start = time.perf_counter()
+        start = time.time()
         answer = sum(pool.map(slow_calculate, list(range(50))))
-        stop = time.perf_counter()
+        stop = time.time()
         elapsed_time = stop - start
     return elapsed_time

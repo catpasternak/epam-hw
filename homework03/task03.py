@@ -1,10 +1,9 @@
-# I decided to write a code that generates data filtering object from a list of keyword parameters:
+# I decided to write a code that generates data filtering object from a list of keyword parameters
 
 
 class Filter:
-    """
-    Helper filter class. Accepts a list of single-argument
-    functions that return True if object in list conforms to some criteria
+    """Helper filter class. Accepts a list of single-argument functions
+    that return True if object in list conforms to some criteria.
     """
 
     def __init__(self, functions):
@@ -15,8 +14,8 @@ class Filter:
 
 
 # example of usage:
-# positive_even = Filter([lambda a: a % 2 == 0, lambda a: a > 0, lambda a: isinstance(a, int)]) # fixed
-# positive_even.apply(range(100)) should return only even numbers from 0 to 99                  # check
+# positive_even = Filter([lambda a: a % 2 == 0, lambda a: a > 0, lambda a: isinstance(a, int)])
+# positive_even.apply(range(100)) should return only even numbers from 0 to 99
 
 
 def make_filter(**keywords):
@@ -25,16 +24,10 @@ def make_filter(**keywords):
 
     for key, value in keywords.items():
 
-        def func_for_filter(key, value):
-            def keyword_filter_func(data_elem):  # value changed to data_elem
-                try:
-                    return data_elem[key] == value  # value[key] to data_elem[key]
-                except KeyError:  # added exception
-                    return False
+        def keyword_filter_func(data_elem, key=key, value=value):
+            return data_elem.get(key) == value
 
-            return keyword_filter_func
-
-        filter_funcs.append(func_for_filter(key, value))
+        filter_funcs.append(keyword_filter_func)
 
     return Filter(filter_funcs)
 
