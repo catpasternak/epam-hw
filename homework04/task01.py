@@ -31,7 +31,6 @@ def read_magic_number(path: str) -> bool:
             line_1 = fi.readline()
             if float(line_1) >= 1 and float(line_1) < 3:
                 return True
-    except (FileNotFoundError, ValueError):
-        raise ValueError
-    else:
-        return False
+    except Exception:
+        raise ValueError("File not found or file content in not number")
+    return False

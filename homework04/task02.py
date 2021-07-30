@@ -24,7 +24,10 @@ from urllib.request import urlopen
 
 
 class UrlResponse:
-    """Service class that extracts data fron url"""
+    """Service class that extracts data fron url.
+    :param url: url where we get source data from
+    :type url: str
+    """
 
     def __init__(self, url):
         self.url = url
@@ -34,8 +37,7 @@ class UrlResponse:
             response = urlopen(self.url)
         except Exception:
             raise ValueError("Unreachable {url}")
-        else:
-            return response.read().decode()
+        return response.read().decode()
 
 
 def count_dots_on_i(url: str) -> int:

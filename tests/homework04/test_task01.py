@@ -1,51 +1,49 @@
 import os
+import tempfile
 
 import pytest
 
 from homework04.task01 import read_magic_number
 
 
-@pytest.fixture
-def create_file_1(tmpdir):
-    f = tmpdir.join("myfile.txt")
-    f.write("2.5")
-    yield f
-    os.remove(f)
+def create_file(with_content):
+    """Parametrized decorator that creates temporary file, writes content to it,
+    passes created file to function and removes the file afterwards.
+    """
+
+    def decorate(func):
+        def wrapper(*args, **kwargs):
+            fd, path = tempfile.mkstemp()
+            os.write(fd, with_content)
+            os.close(fd)
+            try:
+                return func(path, *args, **kwargs)
+            finally:
+                if os.path.exists(path):
+                    os.unlink(path)
+
+        return wrapper
+
+    return decorate
 
 
-def test_read_magic_number_for_positive_case(create_file_1):
+@create_file(with_content=b"2.5")
+def test_read_magic_number_for_positive_case(temp_filename):
     """Testing that if file contains number on 1st line and it is in interval - function returns True"""
-    f1 = create_file_1
-    assert read_magic_number(f1)
+    assert read_magic_number(temp_filename)
 
 
-@pytest.fixture
-def create_file_2(tmpdir):
-    f = tmpdir.join("myfile.txt")
-    f.write("5")
-    yield f
-    os.remove(f)
-
-
-def test_read_magic_number_for_negative_case(create_file_2):
+@create_file(with_content=b"5")
+def test_read_magic_number_for_negative_case(temp_filename):
     """Testing that if file contains number on 1st line and it is not in interval - function returns False"""
-    f2 = create_file_2
-    assert not read_magic_number(f2)
+    assert not read_magic_number(temp_filename)
 
 
-@pytest.fixture
-def create_file_3(tmpdir):
-    f = tmpdir.join("myfile.txt")
-    f.write("Hollywood")
-    yield f
-    os.remove(f)
-
-
-def test_valueerror_exception_case(create_file_3):
+@create_file(with_content=b"Hollywood")
+def test_valueerror_exception_case(temp_filename):
     """Testing that if file contains other type than int or float - function raises ValueError"""
-    f3 = create_file_3
     with pytest.raises(ValueError):
-        read_magic_number(f3)
+        read_magic_number(temp_filename)
 
 
 def test_filenotfounderror_exception_case():
