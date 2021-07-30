@@ -45,7 +45,7 @@ class MyPatch(ContextDecorator):
         self.obj_name = modules[-1]
         self.original_obj = getattr(self.current_module, self.obj_name)
         setattr(self.current_module, self.obj_name, self.mock_obj)
-        return self.mock_obj
+        return getattr(self.current_module, self.obj_name)
 
     def __exit__(self, *args, **kwargs):
         setattr(self.current_module, self.obj_name, self.original_obj)
