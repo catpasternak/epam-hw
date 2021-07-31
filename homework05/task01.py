@@ -37,25 +37,52 @@ import datetime
 
 
 class Homework:
-    """Homework task with deadline"""
+    """Homework task, consists of text and deadline. Keeps time of creation.
+    Has a check for not exceeding deadline.
+    :param text: text of a task
+    :type text: str
+    :param deadline: number of days for passing solution to homework
+    :type deadline: int
+    """
 
     def __init__(self, text, deadline):
+        """Constructor method. Introduces `self.created` variable that registers
+        time when homework object was created
+        """
         self.text = text
         self.deadline = datetime.timedelta(days=deadline)
         self.created = datetime.datetime.today()
 
     def is_active(self):
+        """Checks if homework hasn't exceeded deadline. Compares moment
+        of creation and current date and time.
+        :return: True if homeworks hasn't expired, else False
+        :rtype: bool
+        """
         return self.created + self.deadline > datetime.datetime.today()
 
 
 class Student:
-    """Student does homework"""
+    """Student who can do homework.
+    :param first_name: first name of student
+    :type first_name: str
+    :param last_name: last name of student
+    :type last_name: str
+    """
 
     def __init__(self, first_name, last_name):
+        """Constructor method."""
         self.first_name = first_name
         self.last_name = last_name
 
     def do_homework(self, homework):
+        """Checks if homework object is not overdue. If it is not -
+        returns that homework object. Else returns None and prints message.
+        :param homework: object of :class:`Homework`
+        :type homework: type
+        :return: homework object if it is not overdue, else None
+        :rtype: type, None
+        """
         if homework.is_active():
             return homework
         else:
@@ -64,14 +91,28 @@ class Student:
 
 
 class Teacher:
-    """Teacher creates homeworks"""
+    """Teacher who can create homework.
+    :param first_name: first name of teacher
+    :type first_name: str
+    :param last_name: last name of teacher
+    :type last_name: str
+    """
 
     def __init__(self, first_name, last_name):
+        """Constructor method."""
         self.first_name = first_name
         self.last_name = last_name
 
     @classmethod
     def create_homework(cls, text, days):
+        """Creates object of :class:`Homework`.
+        :param text: text of homework task
+        :type text: str
+        :param days: number of days that is deadline for homework
+        :type days: int
+        :return: object of :class:`Homework`
+        :rtype: type
+        """
         return Homework(text, days)
 
 

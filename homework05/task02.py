@@ -19,15 +19,19 @@ print(custom_sum.__original_func)  # <function custom_sum at <some_id>>
 import functools
 
 
-def preserve_attr(func):
-    """Decorator function that forwards wrapped function attributes to wrapper"""
+def preserve_attr(source_func):
+    """Decorator function that forwards source function attributes to wrapper.
+    :param source_func: initial function that is being wrapped
+    :type source_func: Callable
+    :return: modified wrapper that preserves some source function attributes
+    :rtype: Callable
+    """
+    def wrapper(wrapper_func):
 
-    def wrapper(wrapped_func):
-
-        setattr(wrapped_func, "__name__", func.__name__)
-        setattr(wrapped_func, "__doc__", func.__doc__)
-        setattr(wrapped_func, "__original_func", func)
-        return wrapped_func
+        setattr(wrapper_func, "__name__", source_func.__name__)
+        setattr(wrapper_func, "__doc__", source_func.__doc__)
+        setattr(wrapper_func, "__original_func", source_func)
+        return wrapper_func
 
     return wrapper
 
@@ -35,7 +39,7 @@ def preserve_attr(func):
 def print_result(func):
     @preserve_attr(func)
     def wrapper(*args, **kwargs):
-        """Function-wrapper which print result of an original function"""
+        """Wrapper function that prints result of decorated function"""
         result = func(*args, **kwargs)
         print(result)
         return result
