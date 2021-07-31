@@ -54,72 +54,125 @@ from collections import defaultdict
 
 
 class DeadlineError(Exception):
-    """Raised when homework is out of date"""
+    """Exception class. Raised when homework is out of date"""
 
     pass
 
 
 class Homework:
-    """Homework task with deadline"""
-
+    """Homework task, consists of text and deadline. Keeps time of creation.
+    Has a check for not exceeding deadline.
+    :param text: text of a task
+    :type text: str
+    :param deadline: number of days for passing solution to homework
+    :type deadline: int
+    """
     def __init__(self, text, deadline):
+        """Constructor method. Introduces `self.created` variable that registers
+        time when homework object was created
+        """
         self.text = text
         self.deadline = datetime.timedelta(days=deadline)
         self.created = datetime.datetime.today()
 
     def is_active(self):
+        """Checks if homework hasn't exceeded deadline. Compares moment
+        of creation and current date and time.
+        :return: True if homeworks hasn't expired, else False
+        :rtype: bool
+        """
         return self.created + self.deadline > datetime.datetime.today()
 
 
 class HomeworkResult:
-    """Solution to homework"""
+    """Solution to homework.
+    :param author: instance of :class:`Student` that did homework
+    :type author: :class:`Student`
+    :param homework: instance of :class:`Homework` that student did
+    :type homework: :class:`Homework`
+    :param solution: solution to homework that student wrote
+    :type solution: str
+    """
 
-    def __init__(self, author, homework, solution: str):
-        self.author = author  # Student object
-        if isinstance(homework, Homework):
-            self.homework = homework
-        else:
+    def __init__(self, author, homework, solution):
+        """Constructor method."""
+        self.author = author
+        if not isinstance(homework, Homework):
             raise AttributeError("You gave not a Homework object")
+        self.homework = homework
         self.solution = solution
         self.created = datetime.datetime.today()
 
 
 class Person:
-    """Person has first name and last name"""
+    """Person has first name and last name.
+    :param first_name: first name of person
+    :type first_name: str
+    :param last_name: last name of person
+    :type last_name: str
+    """
 
     def __init__(self, first_name, last_name):
+        """Constructor method."""
         self.first_name = first_name
         self.last_name = last_name
 
 
 class Student(Person):
-    """Student does homework"""
+    """Student who can do homework.
+    """
 
     def do_homework(self, homework, solution):
+        """Checks if homework object is not overdue. If it is not -
+        returns that homework result object. Else raises exception with message.
+        :param homework: object of :class:`Homework`
+        :type homework: type
+        :param solution: solution to homework that student wrote
+        :type solution: str
+        :return: instance of :class:`HomeworkResult`
+        :rtype: :class:`HomeworkResult`, None
+        """
         if homework.is_active():
             return HomeworkResult(self, homework, solution)
-        else:
-            raise DeadlineError("You are late")
+        raise DeadlineError("You are late")
 
 
 class Teacher(Person):
-    """Teacher creates homeworks"""
+    """Teacher who can create homework.
+    """
 
     @classmethod
     def create_homework(cls, text, days):
+        """Creates object of :class:`Homework`.
+        :param text: text of homework task
+        :type text: str
+        :param days: number of days that is deadline for homework
+        :type days: int
+        :return: object of :class:`Homework`
+        :rtype: type
+        """
         return Homework(text, days)
 
     homework_done = defaultdict(set)
 
     def check_homework(self, homework_result):
+        """Returns `True` if length of solution is more than 5 symbols,
+        else False
+        :param homework_result: instance of :class:`Homework result`
+        :rtype: bool
+        """
         if len(homework_result.solution) > 5:
             Teacher.homework_done[homework_result.homework].add(homework_result)
             return True
-        else:
-            return False
+        return False
 
     @classmethod
     def reset_results(cls, scope="total"):
+        """Clears results of homework done.
+        :param scope: Scope of clearing, if total - removes all
+        :type scope: str
+        :return: None
+        """
         if scope == "total":
             Teacher.homework_done.clear()
         else:

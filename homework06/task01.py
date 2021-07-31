@@ -10,24 +10,38 @@ reset_instances_counter - сбросить счетчик экземпляров
 """
 
 
-def instances_counter(orig_cls):
-    """Some code"""
+def instances_counter(original_cls):
+    """"""
 
-    class Counter(orig_cls):
-        """Inherits from decorated class and adds counter logic"""
+    class Counter(original_cls):
+        """Inherits from decorated class and adds counter logic.
+        :param counter: class variable that counts number of class instances
+        :type counter: int
+        """
 
         counter = 0
 
         def __init__(self, *args, **kwargs):
-            orig_cls.__init__(self, *args, **kwargs)
-            Counter.counter += 1
+            """Constructor method, inherits original class constructor method
+            with any number of args and kwargs. Adds 1 to class variable `counter`.
+            """
+            super().__init__(*args, **kwargs)
+            self.__class__.counter += 1
 
         @classmethod
         def get_created_instances(cls):
+            """Returns number of created instances of the class.
+            :return: value of `counter` variable
+            :rtype: int
+            """
             return cls.counter
 
         @classmethod
         def reset_instances_counter(cls):
+            """Sets `counter` to zero.
+            :return: number of class instances
+            :rtype: int
+            """
             result = cls.counter
             cls.counter = 0
             return result

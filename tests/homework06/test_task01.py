@@ -36,3 +36,17 @@ def test_decorator_doesnt_change_class_attr_and_methods():
     assert point.x == 3
     assert point.y == 4
     assert point.distance(0, 0) == pytest.approx(5.0)
+
+
+def test_with_inheritance():
+    """Tests that counter does not count child class instances and child class with different
+    number of args works correctly.
+    """
+    Point.reset_instances_counter()
+
+    class ChildPoint(Point):
+        def __init__(self, x, y, z):
+            self.x, self.y, self.z = x, y, z
+
+    child_inst_1, child_inst_2 = ChildPoint(1, 1, 1), ChildPoint(2, 2, 2)
+    assert Point.get_created_instances() == 0
