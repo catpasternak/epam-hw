@@ -85,9 +85,8 @@ class Student:
         """
         if homework.is_active():
             return homework
-        else:
-            print("You are late")
-            return None
+        print("You are late")
+        return None
 
 
 class Teacher:

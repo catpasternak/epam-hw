@@ -26,6 +26,7 @@ def preserve_attr(source_func):
     :return: modified wrapper that preserves some source function attributes
     :rtype: Callable
     """
+
     def wrapper(wrapper_func):
 
         setattr(wrapper_func, "__name__", source_func.__name__)
