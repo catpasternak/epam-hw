@@ -13,13 +13,11 @@ class Point:
         return ((self.x - dist_x) ** 2 + (self.y - dist_y) ** 2) ** 0.5
 
 
-def test_decorator_without_instances():
-    """Testing that decorator sets counter to zero when no instances exist"""
+def test_decorator_with_and_without_instances():
+    """Testing that decorator sets counter to zero when no instances exist
+    and counts class instances correctly.
+    """
     assert Point.get_created_instances() == 0
-
-
-def test_decorator_with_instances():
-    """Testing that decorator counts class instances"""
     inst_1, inst_2, inst_3 = Point(1, 1), Point(1, 2), Point(1, 3)
     assert Point.get_created_instances() == 3
 
@@ -50,3 +48,13 @@ def test_with_inheritance():
 
     child_inst_1, child_inst_2 = ChildPoint(1, 1, 1), ChildPoint(2, 2, 2)
     assert Point.get_created_instances() == 0
+
+
+def test_child_class_counter():
+    """Tests that child class counter works correctly"""
+
+    class ChildPoint2(Point):
+        pass
+
+    child_inst_1, child_inst_2 = ChildPoint2(1, 1), ChildPoint2(2, 2)
+    assert ChildPoint2.get_created_instances() == 2
