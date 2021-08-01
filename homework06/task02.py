@@ -67,6 +67,7 @@ class Homework:
     :param deadline: number of days for passing solution to homework
     :type deadline: int
     """
+
     def __init__(self, text, deadline):
         """Constructor method. Introduces `self.created` variable that registers
         time when homework object was created
@@ -119,8 +120,7 @@ class Person:
 
 
 class Student(Person):
-    """Student who can do homework.
-    """
+    """Student who can do homework."""
 
     def do_homework(self, homework, solution):
         """Checks if homework object is not overdue. If it is not -
@@ -138,8 +138,7 @@ class Student(Person):
 
 
 class Teacher(Person):
-    """Teacher who can create homework.
-    """
+    """Teacher who can create homework."""
 
     @classmethod
     def create_homework(cls, text, days):
