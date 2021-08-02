@@ -60,36 +60,34 @@ class KeyValueStorage:
         """
         self.file_path = file_path
         self.data = FileReader(file_path).read_lines()
-        self.dict = self.create_dict()
+        self.fill_dict()
 
-    def create_dict(self):
+    def fill_dict(self):
         """Creates instance dictionary from input file data.
         :raises ValueError: Raises error in case of invalid key.
         :return: dictionary containing key-value pairs from file.
         :rtype: dict
         """
-        dic = {}
         for line in self.data:
             key, value = line.rstrip().split("=")
             if not key.isidentifier() or iskeyword(key):
                 raise ValueError("Key is not a valid identifier!")
-            if key in self.__dir__():
+            if key in self.__class__.__dict__:
                 continue
             if value.isdigit():
                 value = int(value)
-            dic[key] = value
-        return dic
+            self.__dict__[key] = value
 
     def __getattr__(self, attr):
         """Getattr method.
         :return: value from self.dict
         :rtype: str, int
         """
-        return self.dict[attr]
+        return self.__dict__[attr]
 
     def __getitem__(self, item):
         """Getitem method
         :return: value from self.dict
         :rtype: str, int
         """
-        return self.dict[item]
+        return self.__dict__[item]

@@ -51,6 +51,7 @@ then
 Avoid reading entire table into memory. When iterating through records, start reading the first record, then go to the next one, until records are exhausted.
 When writing tests, it's not always neccessary to mock database calls completely. Use supplied example.sqlite file as database fixture file.
 """
+import re
 import sqlite3
 from contextlib import contextmanager
 
@@ -77,44 +78,65 @@ class TableData:
     def __init__(self, database_name, table_name):
         """Constructor method."""
         self.database_name = database_name
-        self.table_name = table_name
+        self.table_name = self.check_table_name(table_name)
+        self.position = 0
+
+    def check_table_name(self, table_name):
+        """Returns table name if it is a valid name, otherwise raises error.
+        :param table_name: name of a table to check
+        :type table_name: str
+        :rtype: str
+        """
+        if not re.match(r"[a-zA-Z0-9_-]+$", table_name):
+            raise ValueError("Table name is not valid")
+        return table_name
 
     def __len__(self):
-        """Len method.
-        :return: table rows count
-        :rtype: int
-        """
+        """Length method."""
         with connect_db(self.database_name) as cursor:
             cursor.execute(f"SELECT COUNT(*) FROM {self.table_name}")
             return cursor.fetchone()[0]
 
+    def column_names(self):
+        """Returns headers from table."""
+        with connect_db(self.database_name) as cursor:
+            cursor.execute(f"SELECT * from {self.table_name}")
+            column_names = (description[0] for description in cursor.description)
+        return column_names
+
     def __getitem__(self, item):
         """Getitem method.
-        :param item: key
         :return: rows from table that satisfy condition
         :rtype: list of tuples
         """
         with connect_db(self.database_name) as cursor:
-            cursor.execute(f"SELECT * FROM {self.table_name} WHERE name='{item}'")
+            cursor.execute(
+                f"SELECT * FROM {self.table_name} WHERE name=:name", {"name": item}
+            )
             return cursor.fetchall()
 
     def __contains__(self, item):
-        """Contains method.
-        :param item: key
-        :type item: str
-        :return: rows from table that satisfy condition
-        :rtype: list of tuples
-        """
+        """Contains method."""
         with connect_db(self.database_name) as cursor:
-            cursor.execute(f"SELECT * FROM {self.table_name} WHERE name='{item}'")
+            cursor.execute(
+                f"SELECT * FROM {self.table_name} WHERE name=:name", {"name": item}
+            )
             if cursor.fetchone()[0]:
                 return True
             return False
 
     def __iter__(self):
-        """Iter method.
-        :return: yields rows from table
-        :rtype: list of tuples
-        """
+        "Iterable method." ""
+        return self
+
+    def __next__(self):
+        """Iterator method."""
+        if self.position >= self.__len__():
+            raise StopIteration
         with connect_db(self.database_name) as cursor:
-            yield from cursor.execute(f"SELECT * FROM {self.table_name}")
+            cursor.execute(
+                f"SELECT * FROM {self.table_name} LIMIT 1 OFFSET {self.position}"
+            )
+            row = cursor.fetchone()
+            self.position += 1
+            return {key: value for key, value in zip(self.column_names(), row)}

@@ -31,4 +31,4 @@ def test_iteration(presidents):
     """Tests that __iter__ method returns rows from table.
     :param presidents: table 'presidents' from example database
     """
-    assert [pr[0] for pr in presidents] == ["Yeltsin", "Trump", "Big Man Tyrone"]
+    assert [pr["name"] for pr in presidents] == ["Yeltsin", "Trump", "Big Man Tyrone"]
