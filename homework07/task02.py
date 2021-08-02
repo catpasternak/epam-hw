@@ -13,24 +13,39 @@ Examples:
     Output: False
     Explanation: s becomes "c" while t becomes "b".
 """
+from itertools import zip_longest
 
 
-def convert_string(string: str) -> str:
-    """Converts into pure string without backspace characters"""
-    if "#" not in string:
-        return string
-    flag = 0
-    new_string = ""
+def generate_from_str(string):
+    """Generates characters from given string in reversed order in such a manner,
+    that '#' symboles are not printed and delete letters before them.
+    :param string: input string containing letter and '#' symbols
+    :type string: str
+    """
+    pawn_flag = 0
     for char in reversed(string):
         if char == "#":
-            flag += 1
-        elif not flag:
-            new_string = char + new_string
+            pawn_flag += 1
         else:
-            flag -= 1
-    return new_string
+            if pawn_flag:
+                pawn_flag -= 1
+            else:
+                yield char
 
 
 def backspace_compare(first: str, second: str) -> bool:
-    """Compares 2 strings containing backspaces and returns if their printed versions are the same"""
-    return convert_string(first) == convert_string(second)
+    """Compares 2 strings containing backspaces and returns if their printed versions are the same.
+    Symbol '#' is hadled as backspace key when printing.
+    :param first: first string to compare
+    :type first: str
+    :param second: second string to compare
+    :type second: str
+    :return: `True` if strings are equal when printed, `False` otherwise
+    :rtype: bool
+    """
+    for first, second in zip_longest(
+        generate_from_str(first), generate_from_str(second)
+    ):
+        if first != second:
+            return False
+    return True

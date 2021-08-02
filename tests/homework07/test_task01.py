@@ -24,5 +24,5 @@ testdata = [("RED", 8), ("key2", 2), (["RED", "BLUE"], 3), ({"nested_key": "RED"
 
 @pytest.mark.parametrize("elem, expected", testdata)
 def test_element_occurrences_counter(elem, expected):
-    """Testing that function returns correct number of occurences for different types of elements"""
+    """Tests that function returns correct number of occurences for different types of elements"""
     assert find_occurrences(example_tree, elem) == expected
