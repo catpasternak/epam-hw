@@ -3,7 +3,7 @@ from tempfile import NamedTemporaryFile
 
 from homework09.task03 import universal_file_counter
 
-dir_path = os.path.dirname(os.path.abspath(__file__))
+dir_path = os.path.dirname(__file__)
 
 
 class TempFiles:
