@@ -34,7 +34,11 @@ def universal_file_counter(dir_path, file_extension, tokenizer=None):
     """
     counter = 0
     re_extension = "." + file_extension + "$"
-    filenames = (fi for fi in os.listdir(dir_path) if re.search(re_extension, fi))
+    filenames = (
+        os.path.join(dir_path, fi)
+        for fi in os.listdir(dir_path)
+        if re.search(re_extension, fi)
+    )
     for fi in filenames:
         with open(fi) as file_input:
             for line in tokenize_by_lines(file_input):
