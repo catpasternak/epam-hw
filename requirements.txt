@@ -1,0 +1,4 @@
+requests
+bs4
+aiohttp==3.7.4.post0
+Django==3.2.6
