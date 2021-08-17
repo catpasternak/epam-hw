@@ -1,0 +1,82 @@
+[
+    {
+        "code": "MRNA",
+        "name": "Moderna Inc",
+        "price": 34765.37,
+        "p_e": -59.95,
+        "growth": "461.75%",
+        "poten_profit": "817.12%"
+    },
+    {
+        "code": "GNRC",
+        "name": "Generac Holdings Inc",
+        "price": 31051.71,
+        "p_e": 34.05,
+        "growth": "230.70%",
+        "poten_profit": "178.25%"
+    },
+    {
+        "code": "ENPH",
+        "name": "Enphase Energy Inc",
+        "price": 13671.23,
+        "p_e": 125.98,
+        "growth": "208.68%",
+        "poten_profit": "290.17%"
+    },
+    {
+        "code": "TPR",
+        "name": "Tapestry",
+        "price": 3260.31,
+        "p_e": 13.55,
+        "growth": "193.24%",
+        "poten_profit": "251.27%"
+    },
+    {
+        "code": "CZR",
+        "name": "Caesars Entertainment",
+        "price": 6702.41,
+        "p_e": -5.36,
+        "growth": "168.47%",
+        "poten_profit": "208.43%"
+    },
+    {
+        "code": "SIVB",
+        "name": "SVB Financial Group Shs",
+        "price": 42236.86,
+        "p_e": 16.38,
+        "growth": "161.22%",
+        "poten_profit": "174.81%"
+    },
+    {
+        "code": "GPS",
+        "name": "Gap Inc.",
+        "price": 2248.36,
+        "p_e": -11.51,
+        "growth": "160.10%",
+        "poten_profit": "164.56%"
+    },
+    {
+        "code": "ALB",
+        "name": "Albemarle Corp.",
+        "price": 17427.58,
+        "p_e": 35.35,
+        "growth": "158.74%",
+        "poten_profit": "206.11%"
+    },
+    {
+        "code": "DVN",
+        "name": "Devon Energy Corp.",
+        "price": 2031.26,
+        "p_e": -167.13,
+        "growth": "152.75%",
+        "poten_profit": "313.31%"
+    },
+    {
+        "code": "COF",
+        "name": "Capital One Financial Corp.",
+        "price": 12570.97,
+        "p_e": 16.72,
+        "growth": "152.09%",
+        "poten_profit": "170.04%"
+    }
+]

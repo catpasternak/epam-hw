@@ -1,0 +1,82 @@
+[
+    {
+        "code": "NVR",
+        "name": "NVR Inc.",
+        "price": 385481.44,
+        "p_e": 17.87,
+        "growth": "40.41%",
+        "poten_profit": "39.46%"
+    },
+    {
+        "code": "AMZN",
+        "name": "Amazon",
+        "price": 244295.23,
+        "p_e": 79.54,
+        "growth": "6.58%",
+        "poten_profit": "31.42%"
+    },
+    {
+        "code": "GOOG",
+        "name": "Alphabet C (ex Google)",
+        "price": 203670.12,
+        "p_e": 30.01,
+        "growth": "83.26%",
+        "poten_profit": "99.08%"
+    },
+    {
+        "code": "GOOGL",
+        "name": "Alphabet A (ex Google)",
+        "price": 201940.61,
+        "p_e": 30.0,
+        "growth": "81.87%",
+        "poten_profit": "97.26%"
+    },
+    {
+        "code": "BKNG",
+        "name": "Booking Holdings Inc Registered Shs",
+        "price": 161627.56,
+        "p_e": 460.92,
+        "growth": "25.83%",
+        "poten_profit": "58.33%"
+    },
+    {
+        "code": "CMG",
+        "name": "Chipotle Mexican Grill Inc.",
+        "price": 138628.01,
+        "p_e": 129.05,
+        "growth": "62.72%",
+        "poten_profit": "68.83%"
+    },
+    {
+        "code": "AZO",
+        "name": "AutoZone Inc.",
+        "price": 120622.7,
+        "p_e": 16.46,
+        "growth": "38.92%",
+        "poten_profit": "53.49%"
+    },
+    {
+        "code": "MTD",
+        "name": "Mettler-Toledo International Inc.",
+        "price": 111702.1,
+        "p_e": 43.78,
+        "growth": "63.20%",
+        "poten_profit": "65.64%"
+    },
+    {
+        "code": "ISRG",
+        "name": "Intuitive Surgical Inc",
+        "price": 74017.91,
+        "p_e": 80.71,
+        "growth": "48.59%",
+        "poten_profit": "63.52%"
+    },
+    {
+        "code": "BLK",
+        "name": "BlackRock Inc.",
+        "price": 67236.02,
+        "p_e": 20.99,
+        "growth": "50.49%",
+        "poten_profit": "73.19%"
+    }
+]

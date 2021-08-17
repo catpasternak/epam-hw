@@ -1,0 +1,82 @@
+[
+    {
+        "code": "MRNA",
+        "name": "Moderna Inc",
+        "price": 34765.37,
+        "p_e": -59.95,
+        "growth": "461.75%",
+        "poten_profit": "817.12%"
+    },
+    {
+        "code": "MRK",
+        "name": "Merck Co.",
+        "price": 5520.45,
+        "p_e": 13.66,
+        "growth": "-2.34%",
+        "poten_profit": "447.06%"
+    },
+    {
+        "code": "FANG",
+        "name": "Diamondback Energy Inc",
+        "price": 5812.63,
+        "p_e": 15.58,
+        "growth": "121.52%",
+        "poten_profit": "333.90%"
+    },
+    {
+        "code": "DVN",
+        "name": "Devon Energy Corp.",
+        "price": 2031.26,
+        "p_e": -167.13,
+        "growth": "152.75%",
+        "poten_profit": "313.31%"
+    },
+    {
+        "code": "DISCA",
+        "name": "Discovery Communications Inc  (A)",
+        "price": 2164.46,
+        "p_e": 9.18,
+        "growth": "34.53%",
+        "poten_profit": "309.75%"
+    },
+    {
+        "code": "VIAC",
+        "name": "ViacomCBS",
+        "price": 2968.87,
+        "p_e": null,
+        "growth": "62.97%",
+        "poten_profit": "298.01%"
+    },
+    {
+        "code": "OXY",
+        "name": "Occidental Petroleum Corp.",
+        "price": 1942.2,
+        "p_e": -4.41,
+        "growth": "71.76%",
+        "poten_profit": "293.19%"
+    },
+    {
+        "code": "ENPH",
+        "name": "Enphase Energy Inc",
+        "price": 13671.23,
+        "p_e": 125.98,
+        "growth": "208.68%",
+        "poten_profit": "290.17%"
+    },
+    {
+        "code": "DISCK",
+        "name": "Discovery Communications Inc  (C)",
+        "price": 2050.39,
+        "p_e": 8.03,
+        "growth": "39.51%",
+        "poten_profit": "284.66%"
+    },
+    {
+        "code": "MRO",
+        "name": "Marathon Oil Corp.",
+        "price": 910.38,
+        "p_e": -5.6,
+        "growth": "124.26%",
+        "poten_profit": "284.18%"
+    }
+]
