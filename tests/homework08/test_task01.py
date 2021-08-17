@@ -27,6 +27,7 @@ class FakeReader:
 def test_content():
     return [
         "name=kek\n",
+        "fill_dict=abc\n",
         "last_name=top\n",
         "power=9001\n",
         "song=shadilay\n",
@@ -42,6 +43,7 @@ def test_class_attributes(test_content):
         mock_obj.return_value = FakeReader(content=test_content)
         storage = KeyValueStorage("somefile")
         assert storage.name == "kek"
+        assert storage.fill_dict == "abc"
         assert storage.power == 9001
         assert storage["song"] == "shadilay"
 
