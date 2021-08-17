@@ -16,6 +16,7 @@ jobs:
       - name: Run script
         run: |
           pip install black isort pytest
+          pip install -r requirements.txt
           ls -la
           black --check .
           isort --check .
